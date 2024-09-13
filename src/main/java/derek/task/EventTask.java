@@ -6,7 +6,7 @@ import java.time.format.DateTimeParseException;
 
 /**
  * The {@code EventTask} class represents a task that occurs during a specific time frame.
- * It extends the {@code Task} class and includes a start time and an end time.
+ * It extends the {@code Task} class and includes both a start time and an end time.
  */
 public class EventTask extends Task {
     private String startTime;
@@ -14,7 +14,7 @@ public class EventTask extends Task {
 
     /**
      * Constructs an {@code EventTask} object with the specified name, start time, and end time.
-     * The start and end times are parsed and formatted to include both date and time.
+     * Both start and end times are parsed and formatted to include both date and time.
      *
      * @param name the name or description of the event task
      * @param startTime the start time of the event in the format "dd/MM/yyyy HH:mm"
@@ -23,20 +23,28 @@ public class EventTask extends Task {
      */
     public EventTask(String name, String startTime, String endTime) throws DateTimeParseException {
         super(name);
-
-        // Use LocalDateTime instead of LocalDate to handle date and time
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        LocalDateTime inputStartTime = LocalDateTime.parse(startTime.trim(), inputFormatter);
-        LocalDateTime inputEndTime = LocalDateTime.parse(endTime.trim(), inputFormatter);
-
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mm a");
-        this.startTime = inputStartTime.format(outputFormatter);
-        this.endTime = inputEndTime.format(outputFormatter);
+        this.startTime = convertDate(startTime);
+        this.endTime = convertDate(endTime);
     }
 
+    /**
+     * Converts the event time into a specific format.
+     * The input format is "dd/MM/yyyy HH:mm", and the output format is "dd MMM yyyy hh:mm a" (12-hour format).
+     *
+     * @param time the event time in the input format
+     * @return the formatted event time string
+     * @throws DateTimeParseException if the date string cannot be parsed
+     */
+    public String convertDate(String time) throws DateTimeParseException {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        LocalDateTime inputTime = LocalDateTime.parse(time.trim(), inputFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mm a");
+        return inputTime.format(outputFormatter);
+    }
 
     /**
      * Constructs an {@code EventTask} object with the specified name, start time, end time, and completion status.
+     * If the task is marked as completed, the status is updated accordingly.
      *
      * @param name the name or description of the event
      * @param startTime the start time of the event
@@ -52,11 +60,10 @@ public class EventTask extends Task {
         }
     }
 
-
     /**
      * Gets the start time of the event.
      *
-     * @return the start time as a formatted string
+     * @return the formatted start time as a string
      */
     public String getStartTime() {
         return this.startTime;
@@ -65,10 +72,10 @@ public class EventTask extends Task {
     /**
      * Gets the end time of the event.
      *
-     * @return the end time as a formatted string
+     * @return the formatted end time as a string
      */
     public String getEndTime() {
-        return endTime;
+        return this.endTime;
     }
 
     /**

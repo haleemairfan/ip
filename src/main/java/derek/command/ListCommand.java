@@ -10,20 +10,26 @@ import derek.exception.IncorrectCommandException;
  */
 public class ListCommand extends Command {
 
-    private Storage storage;
     private Ui ui;
 
     /**
-     * Constructs a {@code ListCommand} with the specified user command.
+     * Constructs a {@code ListCommand} with the specified user command, storage, and UI.
      *
      * @param command the user command input
+     * @param storage the storage object for accessing the task list
+     * @param ui the UI object for interacting with the user
      */
     public ListCommand(String command, Storage storage, Ui ui) {
-        super(command);
-        this.storage = storage;
+        super(command, storage);
         this.ui = ui;
     }
 
+    /**
+     * Executes the {@code ListCommand} by returning the task list to the user.
+     *
+     * @return a string representing the list of tasks
+     * @throws IncorrectCommandException if there is an issue in executing the command
+     */
     @Override
     public String execute() throws IncorrectCommandException {
         return this.ui.returnList();

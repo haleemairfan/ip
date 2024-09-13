@@ -3,47 +3,60 @@ package derek.command;
 import derek.Storage;
 import derek.Ui;
 import derek.exception.IncorrectCommandException;
+import derek.task.TaskList;
 
 /**
- * The {@code Command} class processes user input commands and determines the type of command
- * based on the input string. It also provides methods to check the validity of the command
- * and to extract the task details from the command.
+ * The {@code Command} class processes user input commands and provides methods to interact
+ * with the storage and task list. It serves as a base class for specific commands
+ * like {@code CompleteCommand}, {@code DeadlineCommand}, etc.
  */
 public abstract class Command {
     private String command;
+    private Storage storage;
 
     /**
-     * Constructs a {@code Command} object with the specified command string.
+     * Constructs a {@code Command} object with the specified command string and storage.
      *
      * @param command the command input by the user
+     * @param storage the storage object used to interact with the task list
      */
-
-    public Command(String command) {
+    public Command(String command, Storage storage) {
         this.command = command;
+        this.storage = storage;
     }
-
-    /**
-     * Validates if the command is a consent response ('Y' or 'N').
-     *
-     * @throws IncorrectCommandException if the command is not 'Y' or 'N'
-     */
-    public void isConsent() throws IncorrectCommandException {
-        if (!(this.command.equalsIgnoreCase("Y")
-                || this.command.equalsIgnoreCase("N"))) {
-            throw new IncorrectCommandException("Hate me just say! Answer my question RRRRAHHHH!!!");
-        }
-    }
-
 
     /**
      * Returns the command string.
      *
-     * @return the command string
+     * @return the command string input by the user
      */
     public String getCommand() {
         return this.command;
     }
 
-    public abstract String execute() throws IncorrectCommandException;
+    /**
+     * Returns the storage object.
+     *
+     * @return the {@code Storage} object used to interact with the task list
+     */
+    public Storage getStorage() {
+        return this.storage;
+    }
 
+    /**
+     * Returns the task list from the storage.
+     *
+     * @return the {@code TaskList} object containing all tasks
+     */
+    public TaskList getTaskList() {
+        return this.storage.getTaskList();
+    }
+
+    /**
+     * Executes the command. Each subclass must provide its own implementation.
+     *
+     * @return a string indicating the result of executing the command
+     * @throws IncorrectCommandException if there is an error in command execution
+     */
+    public abstract String execute() throws IncorrectCommandException;
 }

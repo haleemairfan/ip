@@ -5,15 +5,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * The {@code DeadlineTask} class represents a task with a deadline. It extends the {@code Task} class
- * and includes a deadline date associated with the task.
+ * The {@code DeadlineTask} class represents a task with a deadline.
+ * It extends the {@code Task} class and includes a deadline date and time associated with the task.
  */
 public class DeadlineTask extends Task {
     private String deadline;
 
     /**
      * Constructs a {@code DeadlineTask} object with the specified name and deadline.
-     * The deadline is parsed and formatted to include both date and time.
+     * The deadline is parsed and formatted to include both date and time in a readable format.
      *
      * @param name the name or description of the task
      * @param deadline the deadline date and time for the task in the format "dd/MM/yyyy HH:mm"
@@ -21,18 +21,27 @@ public class DeadlineTask extends Task {
      */
     public DeadlineTask(String name, String deadline) throws DateTimeParseException {
         super(name);
-        // Use LocalDateTime instead of LocalDate to handle date and time
+        this.deadline = this.convertDate(deadline);
+    }
+
+    /**
+     * Converts the deadline date and time into a specific format.
+     * The input format is "dd/MM/yyyy HH:mm", and the output format is "dd MMM yyyy hh:mm a" (12-hour format).
+     *
+     * @param deadline the deadline string in the input format
+     * @return the formatted deadline string
+     * @throws DateTimeParseException if the date string cannot be parsed
+     */
+    public String convertDate(String deadline) throws DateTimeParseException {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         LocalDateTime inputDateTime = LocalDateTime.parse(deadline.trim(), inputFormatter);
-
-        // Desired output format with time in 12-hour format and AM/PM
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mm a");
-        this.deadline = inputDateTime.format(outputFormatter);
-
+        return inputDateTime.format(outputFormatter);
     }
 
     /**
      * Constructs a {@code DeadlineTask} object with the specified name, deadline, and completion status.
+     * If the task is marked as completed, the status is updated accordingly.
      *
      * @param name the name or description of the task
      * @param deadline the deadline date and time for the task
@@ -46,11 +55,10 @@ public class DeadlineTask extends Task {
         }
     }
 
-
     /**
      * Gets the deadline of the task.
      *
-     * @return the deadline as a formatted string
+     * @return the formatted deadline as a string
      */
     public String getDeadline() {
         return this.deadline;
@@ -64,7 +72,6 @@ public class DeadlineTask extends Task {
     public String getName() {
         return super.getName();
     }
-
 
     /**
      * Returns a string representation of the deadline task, including the task name
