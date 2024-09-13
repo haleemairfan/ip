@@ -47,11 +47,14 @@ public class DeadlineTask extends Task {
      * @param deadline the deadline date and time for the task
      * @param isCompleted the completion status of the task (e.g., "X" for completed)
      */
-    public DeadlineTask(String name, String deadline, String isCompleted) {
+    public DeadlineTask(String name, String deadline, String isCompleted,
+                        String completionDate) {
         super(name);
         this.deadline = deadline;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mm a");
         if (isCompleted.equals("X")) {
-            super.markCompleted();
+            LocalDateTime date = LocalDateTime.parse(completionDate, formatter);
+            super.markCompleted(date);
         }
     }
 

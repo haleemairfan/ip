@@ -66,5 +66,6 @@ public enum CommandEnums {
     /**
      * The {@code FIND} command is used to search for tasks in the task list based on a keyword or phrase.
      */
-    FIND
+    FIND,
+    COMPLETED
 }

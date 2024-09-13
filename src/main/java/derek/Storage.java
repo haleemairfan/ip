@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import derek.task.DeadlineTask;
 import derek.task.EventTask;
 import derek.task.Task;
 import derek.task.TaskList;
+import java.time.format.DateTimeFormatter;
+
 
 
 /**
@@ -80,6 +83,11 @@ public class Storage {
             for (int i = 0; i < taskList.size(); i++) {
                 Task task = taskList.get(i);
                 String isCompleted = task.isCompleted();
+                LocalDateTime date = task.getCompletionTime();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mm a");
+                String completionDate = date != null
+                                        ? date.format(formatter)
+                                        : "Incomplete";
                 if (task instanceof DeadlineTask) {
                     DeadlineTask deadlineTask = (DeadlineTask) task;
                     String deadline = deadlineTask.getDeadline();
@@ -90,6 +98,8 @@ public class Storage {
                             + taskName
                             + "|"
                             + deadline
+                            + "|"
+                            + completionDate
                             + "\n");
                 } else if (task instanceof EventTask) {
                     EventTask eventTask = (EventTask) task;
@@ -104,12 +114,15 @@ public class Storage {
                             + startTime
                             + "|"
                             + endTime
+                            + "|"
+                            + completionDate
                             + "\n");
                 } else {
                     String taskName = task.getName();
                     writeToFile("T|"
                             + isCompleted
                             + "|" + taskName
+                            + "|" + completionDate
                             + "\n");
                 }
             }

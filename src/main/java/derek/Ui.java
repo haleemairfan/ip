@@ -70,6 +70,7 @@ public class Ui {
                 + "unmark (task number)\n"
                 + "delete (task number)\n"
                 + "find (keyword)\n"
+                + "completed\n"
                 + "bye";
     }
 
@@ -113,9 +114,15 @@ public class Ui {
      *
      * @return a string containing the list of tasks
      */
-    public String returnList() {
-        return "I think these are your tasks! Please don't leave me!!\n" + this.taskList;
+    public String returnList(TaskList taskList) {
+        return "I think these are your tasks! Please don't leave me!!\n" + taskList;
     }
+
+    public String returnListOfPastWeek(TaskList taskList) {
+        return "Here are your tasks completed in the past week, I think you can do better\n"
+                + taskList;
+    }
+
 
     /**
      * Removes a task from the task list and prints a message indicating the task was removed.

@@ -1,5 +1,8 @@
 package derek.task;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
  * The {@code Task} class represents a general task with a name and a completion status.
  * It provides methods to mark the task as completed or incomplete, and factory methods
@@ -9,6 +12,7 @@ public class Task {
     private String name;
     private Boolean isCompleted;
 
+    private LocalDateTime completionTime;
 
     /**
      * Constructs a {@code Task} object with the specified name.
@@ -19,12 +23,14 @@ public class Task {
     public Task(String name) {
         this.name = name;
         this.isCompleted = false;
+        this.completionTime = null;
     }
 
     /**
      * Marks the task as completed.
      */
-    public void markCompleted() {
+    public void markCompleted(LocalDateTime completionTime) {
+        this.completionTime = completionTime;
         this.isCompleted = true;
     }
 
@@ -33,6 +39,7 @@ public class Task {
      */
     public void markIncomplete() {
         this.isCompleted = false;
+        this.completionTime = null;
     }
 
     /**
@@ -63,8 +70,10 @@ public class Task {
      * @param deadline the deadline for the task
      * @return a new {@code DeadlineTask} object
      */
-    public static Task deadlineTask(String name, String deadline, String isCompleted) {
-        return new DeadlineTask(name, deadline, isCompleted);
+    public static Task deadlineTask(String name, String deadline, String isCompleted,
+                                    String completionDate) {
+        return new DeadlineTask(name, deadline, isCompleted,
+                completionDate);
     }
 
 
@@ -90,8 +99,10 @@ public class Task {
      * @return a new {@code EventTask} object
      */
     public static Task eventTask(String name, String startTime,
-                                 String endTime, String isCompleted) {
-        return new EventTask(name, startTime, endTime, isCompleted);
+                                 String endTime, String isCompleted,
+                                 String completionDate) {
+        return new EventTask(name, startTime, endTime, isCompleted,
+                completionDate);
     }
 
 
@@ -112,9 +123,10 @@ public class Task {
      * @param isCompleted the completion status of the task
      * @return a new {@code ToDoTask} object
      */
-    public static Task toDoTask(String name, String isCompleted) {
+    public static Task toDoTask(String name, String isCompleted,
+                                String completionDate) {
 
-        return new ToDoTask(name, isCompleted);
+        return new ToDoTask(name, isCompleted, completionDate);
     }
 
     /**
@@ -143,6 +155,11 @@ public class Task {
             completedStatus += "[X] ";
         }
         return String.format(completedStatus + name);
+    }
+
+
+    public LocalDateTime getCompletionTime() {
+        return this.completionTime;
     }
 
 

@@ -12,8 +12,6 @@ import derek.task.TaskList;
  */
 public class IncompleteCommand extends Command {
 
-    private Ui ui;
-    private int sizeOfTaskList;
 
     /**
      * Constructs an {@code IncompleteCommand} with the specified user command, storage, UI, and task list size.
@@ -21,12 +19,9 @@ public class IncompleteCommand extends Command {
      * @param command the user command input
      * @param storage the storage object for accessing the task list
      * @param ui the UI object for interacting with the user
-     * @param sizeOfTaskList the size of the current task list
      */
-    public IncompleteCommand(String command, Storage storage, Ui ui, int sizeOfTaskList) {
-        super(command, storage);
-        this.ui = ui;
-        this.sizeOfTaskList = sizeOfTaskList;
+    public IncompleteCommand(String command, Storage storage, Ui ui) {
+        super(command, storage, ui);
     }
 
     /**
@@ -64,8 +59,9 @@ public class IncompleteCommand extends Command {
      * @throws IncorrectCommandException if the task number is out of bounds
      */
     public void validateTaskNumber(int taskNumber) throws IncorrectCommandException {
+        int sizeOfTaskList = this.getSizeOfTaskList();
         // Explicitly check the condition and throw exception if needed
-        if (taskNumber < 1 || taskNumber > this.sizeOfTaskList) {
+        if (taskNumber < 1 || taskNumber > sizeOfTaskList) {
             throw new IncorrectCommandException("Do you not know how to count?");
         }
     }
@@ -89,6 +85,7 @@ public class IncompleteCommand extends Command {
      * @return the message confirming the task has been marked incomplete
      */
     public String markIncompleteTask(Task task) {
+        Ui ui = this.getUi();
         return ui.incompleteTask(task);
     }
 

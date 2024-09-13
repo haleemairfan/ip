@@ -7,7 +7,6 @@ import derek.Ui;
  * It extends the {@code Command} class and interacts with the UI to print a leaving message.
  */
 public class DeclineCommand extends Command {
-    private Ui ui;
 
     /**
      * Constructs a {@code DeclineCommand} with the specified command, UI, and storage.
@@ -17,8 +16,7 @@ public class DeclineCommand extends Command {
      * @param storage the storage object for accessing necessary data
      */
     public DeclineCommand(String command, Ui ui, Storage storage) {
-        super(command, storage);
-        this.ui = ui;
+        super(command, storage, ui);
     }
 
     /**
@@ -28,6 +26,7 @@ public class DeclineCommand extends Command {
      */
     @Override
     public String execute() {
+        Ui ui = this.getUi();
         return ui.printLeavingMessage();
     }
 }

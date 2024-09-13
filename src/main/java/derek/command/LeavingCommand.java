@@ -10,7 +10,6 @@ import derek.exception.IncorrectCommandException;
  */
 public class LeavingCommand extends Command {
 
-    private Ui ui;
 
     /**
      * Constructs a {@code LeavingCommand} with the specified user command, storage, and UI.
@@ -20,8 +19,7 @@ public class LeavingCommand extends Command {
      * @param ui the UI object for interacting with the user
      */
     public LeavingCommand(String command, Storage storage, Ui ui) {
-        super(command, storage);
-        this.ui = ui;
+        super(command, storage, ui);
     }
 
     /**
@@ -35,7 +33,8 @@ public class LeavingCommand extends Command {
     public String execute() throws IncorrectCommandException {
         Storage storage = this.getStorage();
         storeInFile(storage);
-        return this.ui.printLeavingMessage();
+        Ui ui = this.getUi();
+        return ui.printLeavingMessage();
     }
 
     /**

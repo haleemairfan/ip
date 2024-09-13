@@ -1,5 +1,8 @@
 package derek.task;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * The {@code ToDoTask} class represents a simple task without a specific deadline or time frame.
  * It extends the {@code Task} class and provides a string representation that indicates it is a ToDo task.
@@ -22,10 +25,13 @@ public class ToDoTask extends Task {
      * @param name the name or description of the ToDo task
      * @param isCompleted the completion status of the task (e.g., "X" for completed)
      */
-    public ToDoTask(String name, String isCompleted) {
+    public ToDoTask(String name, String isCompleted,
+                    String completionDate) {
         super(name);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mm a");
         if (isCompleted.equals("X")) {
-            super.markCompleted();
+            LocalDateTime date = LocalDateTime.parse(completionDate, formatter);
+            super.markCompleted(date);
         }
     }
 

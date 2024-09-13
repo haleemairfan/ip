@@ -8,7 +8,6 @@ import derek.Ui;
  */
 public class ConsentCommand extends Command {
 
-    private Ui ui;
 
     /**
      * Constructs a {@code ConsentCommand} with the specified user command and UI.
@@ -18,8 +17,7 @@ public class ConsentCommand extends Command {
      * @param storage the storage object for accessing user-related data
      */
     public ConsentCommand(String command, Ui ui, Storage storage) {
-        super(command, storage);
-        this.ui = ui;
+        super(command, storage, ui);
     }
 
     /**
@@ -29,6 +27,7 @@ public class ConsentCommand extends Command {
      */
     @Override
     public String execute() {
-        return this.ui.getUserName();
+        Ui ui = this.getUi();
+        return ui.getUserName();
     }
 }

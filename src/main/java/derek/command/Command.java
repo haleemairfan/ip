@@ -13,6 +13,7 @@ import derek.task.TaskList;
 public abstract class Command {
     private String command;
     private Storage storage;
+    private Ui ui;
 
     /**
      * Constructs a {@code Command} object with the specified command string and storage.
@@ -20,9 +21,10 @@ public abstract class Command {
      * @param command the command input by the user
      * @param storage the storage object used to interact with the task list
      */
-    public Command(String command, Storage storage) {
+    public Command(String command, Storage storage, Ui ui) {
         this.command = command;
         this.storage = storage;
+        this.ui = ui;
     }
 
     /**
@@ -52,6 +54,10 @@ public abstract class Command {
         return this.storage.getTaskList();
     }
 
+    public int getSizeOfTaskList() {
+        return this.storage.getTaskListSize();
+    }
+
     /**
      * Executes the command. Each subclass must provide its own implementation.
      *
@@ -59,4 +65,8 @@ public abstract class Command {
      * @throws IncorrectCommandException if there is an error in command execution
      */
     public abstract String execute() throws IncorrectCommandException;
+
+    public Ui getUi() {
+        return this.ui;
+    }
 }

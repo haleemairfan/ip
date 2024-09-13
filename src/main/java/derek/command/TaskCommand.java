@@ -12,7 +12,6 @@ import derek.task.TaskList;
  */
 public abstract class TaskCommand extends Command {
 
-    private Ui ui;
 
     /**
      * Constructs a {@code TaskCommand} with the specified user command, storage, and UI.
@@ -22,8 +21,7 @@ public abstract class TaskCommand extends Command {
      * @param ui the UI object for interacting with the user
      */
     public TaskCommand(String command, Storage storage, Ui ui) {
-        super(command, storage);
-        this.ui = ui;
+        super(command, storage, ui);
     }
 
     /**
@@ -54,6 +52,7 @@ public abstract class TaskCommand extends Command {
      * @return a string message confirming the task has been added
      */
     public String printAddTask(Task task) {
-        return this.ui.addTask(task);
+        Ui ui = this.getUi();
+        return ui.addTask(task);
     }
 }

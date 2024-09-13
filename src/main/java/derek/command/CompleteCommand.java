@@ -6,14 +6,15 @@ import derek.exception.IncorrectCommandException;
 import derek.task.Task;
 import derek.task.TaskList;
 
+import java.time.LocalDateTime;
+
 /**
  * The {@code CompleteCommand} class marks a task as completed in the task list.
  * It extends the {@code Command} class and executes the command to complete a task.
  */
 public class CompleteCommand extends Command {
 
-    private Ui ui;
-    private int sizeOfTaskList;
+    private LocalDateTime date;
 
     /**
      * Constructs a {@code CompleteCommand} with the specified user command, storage, UI, and task list size.
@@ -21,12 +22,11 @@ public class CompleteCommand extends Command {
      * @param command the user command input containing the task number to be marked as complete
      * @param storage the storage object for accessing the task list
      * @param ui the UI object for interacting with the user
-     * @param sizeOfTaskList the size of the current task list
      */
-    public CompleteCommand(String command, Storage storage, Ui ui, int sizeOfTaskList) {
-        super(command, storage);
-        this.ui = ui;
-        this.sizeOfTaskList = sizeOfTaskList;
+    public CompleteCommand(String command, Storage storage,
+                           Ui ui, LocalDateTime date) {
+        super(command, storage, ui);
+        this.date = date;
     }
 
     /**
@@ -44,7 +44,7 @@ public class CompleteCommand extends Command {
         int taskNumber = this.getTaskNumber(words[1]);
         this.validateTaskNumber(taskNumber);
         Task task = this.getTask(taskNumber - 1);
-        task.markCompleted();
+        task.markCompleted(this.date);
         return this.completeTask(task);
     }
 
@@ -65,7 +65,8 @@ public class CompleteCommand extends Command {
      * @throws IncorrectCommandException if the task number is less than 1 or greater than the task list size
      */
     public void validateTaskNumber(int taskNumber) throws IncorrectCommandException {
-        if (taskNumber < 1 || taskNumber > this.sizeOfTaskList) {
+        int sizeOfTaskList = this.getSizeOfTaskList();
+        if (taskNumber < 1 || taskNumber > sizeOfTaskList) {
             throw new IncorrectCommandException("do you not know how to count??");
         }
     }
@@ -89,6 +90,7 @@ public class CompleteCommand extends Command {
      * @return the message confirming the task completion
      */
     public String completeTask(Task task) {
-        return this.ui.completeTask(task);
+        Ui ui = this.getUi();
+        return ui.completeTask(task);
     }
 }

@@ -1,6 +1,8 @@
 package derek;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+
 import derek.command.*;
 import derek.exception.IncorrectCommandException;
 
@@ -54,7 +56,8 @@ public class Parser {
      */
     public String processCommand(String tag) throws IncorrectCommandException, DateTimeParseException {
         Command processedCommand;
-        int sizeOfTaskList = this.getSizeOfTaskList();
+        LocalDateTime date = this.getCurrentDate();
+
         try {
             switch (CommandEnums.valueOf(tag)) {
                 case BYE:
@@ -64,13 +67,14 @@ public class Parser {
                     processedCommand = new ListCommand(this.command, this.storage, this.ui);
                     return this.executeCommand(processedCommand);
                 case DELETE:
-                    processedCommand = new DeleteCommand(this.command, this.storage, this.ui, sizeOfTaskList);
+                    processedCommand = new DeleteCommand(this.command, this.storage, this.ui);
                     return this.executeCommand(processedCommand);
                 case MARK:
-                    processedCommand = new CompleteCommand(this.command, this.storage, this.ui, sizeOfTaskList);
+                    processedCommand = new CompleteCommand(this.command, this.storage, this.ui,
+                            date);
                     return this.executeCommand(processedCommand);
                 case UNMARK:
-                    processedCommand = new IncompleteCommand(this.command, this.storage, this.ui, sizeOfTaskList);
+                    processedCommand = new IncompleteCommand(this.command, this.storage, this.ui);
                     return this.executeCommand(processedCommand);
                 case FIND:
                     processedCommand = new FindCommand(this.command, this.storage, this.ui);
@@ -83,6 +87,10 @@ public class Parser {
                     return this.executeCommand(processedCommand);
                 case TODO:
                     processedCommand = new TodoCommand(this.command, this.storage, this.ui);
+                    return this.executeCommand(processedCommand);
+                case COMPLETED:
+                    processedCommand = new TasksCompletedCommand(this.command, this.storage, this.ui,
+                            date);
                     return this.executeCommand(processedCommand);
                 default:
                     throw new IncorrectCommandException("Please respond Y or N, Derek does not appreciate stupid people.");
@@ -130,12 +138,8 @@ public class Parser {
         }
     }
 
-    /**
-     * Retrieves the size of the current task list from storage.
-     *
-     * @return the number of tasks in the task list
-     */
-    public int getSizeOfTaskList() {
-        return this.storage.getTaskListSize();
+
+    public LocalDateTime getCurrentDate() {
+        return LocalDateTime.now();
     }
 }

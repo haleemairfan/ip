@@ -12,8 +12,6 @@ import derek.task.TaskList;
  */
 public class DeleteCommand extends Command {
 
-    Ui ui;
-    int sizeOfTaskList;
 
     /**
      * Constructs a {@code DeleteCommand} with the specified user command, storage, UI, and task list size.
@@ -21,12 +19,9 @@ public class DeleteCommand extends Command {
      * @param command the user command input
      * @param storage the storage object for accessing the task list
      * @param ui the UI object for interacting with the user
-     * @param sizeOfTaskList the size of the current task list
      */
-    public DeleteCommand(String command, Storage storage, Ui ui, int sizeOfTaskList) {
-        super(command, storage);
-        this.ui = ui;
-        this.sizeOfTaskList = sizeOfTaskList;
+    public DeleteCommand(String command, Storage storage, Ui ui) {
+        super(command, storage, ui);
     }
 
     /**
@@ -64,7 +59,8 @@ public class DeleteCommand extends Command {
      * @throws IncorrectCommandException if the task number is out of bounds
      */
     public void validateTaskNumber(int taskNumber) throws IncorrectCommandException {
-        if (taskNumber < 1 || taskNumber > this.sizeOfTaskList) {
+        int sizeOfTaskList = this.getSizeOfTaskList();
+        if (taskNumber < 1 || taskNumber > sizeOfTaskList) {
             throw new IncorrectCommandException("do you not know how to count??");
         }
     }
@@ -98,7 +94,10 @@ public class DeleteCommand extends Command {
      * @return the message confirming the task removal
      */
     public String printRemoval(Task task) {
+        Ui ui = this.getUi();
         return ui.removeTask(task);
     }
+
+
 
 }

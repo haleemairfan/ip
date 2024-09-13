@@ -13,7 +13,6 @@ import derek.task.TaskList;
 public class FindCommand extends Command {
 
     private String taskDescription;
-    private Ui ui;
 
     /**
      * Constructs a {@code FindCommand} with the specified user command, storage, and UI.
@@ -23,8 +22,7 @@ public class FindCommand extends Command {
      * @param ui the UI object for interacting with the user
      */
     public FindCommand(String command, Storage storage, Ui ui) {
-        super(command, storage);
-        this.ui = ui;
+        super(command, storage, ui);
     }
 
     /**
@@ -71,6 +69,7 @@ public class FindCommand extends Command {
      * @return the message with the task details
      */
     public String printTask(Task task) {
+        Ui ui = this.getUi();
         return ui.printTask(task);
     }
 }

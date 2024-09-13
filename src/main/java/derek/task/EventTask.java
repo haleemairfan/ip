@@ -51,13 +51,17 @@ public class EventTask extends Task {
      * @param endTime the end time of the event
      * @param isCompleted the completion status of the task (e.g., "X" for completed)
      */
-    public EventTask(String name, String startTime, String endTime, String isCompleted) {
+    public EventTask(String name, String startTime, String endTime, String isCompleted,
+                     String completionDate) {
         super(name);
         this.startTime = startTime;
         this.endTime = endTime;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mm a");
         if (isCompleted.equals("X")) {
-            super.markCompleted();
+            LocalDateTime date = LocalDateTime.parse(completionDate, formatter);
+            super.markCompleted(date);
         }
+
     }
 
     /**
